@@ -1,7 +1,7 @@
 # devspaces
 
 Start a new workshpace 
-choose the editor 
+choose the in the browser IDE (editor)
 Below the supported editors 
 # (1)
 editor-name: Microsoft Visual Studio Code - Open Source
