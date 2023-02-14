@@ -16,3 +16,8 @@ editor-name: Eclipse Theia
 
 editor-key: eclipse/che-theia/latest
 
+
+
+Slack integration 
+Token page
+https://api.slack.com/apps/A04PJBP0JBV/oauth?
