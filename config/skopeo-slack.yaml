@@ -1,0 +1,38 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: skopeo-pipeline
+spec:
+  tasks:
+    - name: send-to-channel-slack
+      params:
+        - name: token-secret
+          value: slack-token-secret
+        - name: channel
+          value: gitops-demo
+        - name: message
+          value: Hello
+      taskRef:
+        kind: Task
+        name: send-to-channel-slack
+    - name: skopeo-copy
+      params:
+        - name: srcImageURL
+          value: >-
+            docker://image-registry.openshift-image-registry.svc:5000/icscards-cicd/spring-petclinic@sha256:54b272909b2fa3504e765fd28848e2ede5bd1cdf657a364202bccfbd560be83f
+        - name: destImageURL
+          value: 'docker://quay.io/wael2000/spring-petclinic:latest'
+        - name: srcTLSverify
+          value: 'false'
+        - name: destTLSverify
+          value: 'false'
+      runAfter:
+        - send-to-channel-slack
+      taskRef:
+        kind: ClusterTask
+        name: skopeo-copy
+      workspaces:
+        - name: images-url
+          workspace: registry-secret
+  workspaces:
+    - name: registry-secret
