@@ -20,7 +20,7 @@ spec:
     spec:
       serviceAccountName: pipeline
       pipelineRef:
-        name: new-pipeline
+        name: demo-pipeline
       workspaces:
         - name: pipeline-storage
           persistentVolumeClaim:
