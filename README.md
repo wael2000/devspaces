@@ -40,3 +40,4 @@ $ curl -o `basename $IMAGE_NAME`.json "https://quay.io/api/v1/repository/$IMAGE_
 $ jq '.data.Layer.Features[]' `basename $IMAGE_NAME`.json | jq -c '{"Name":.Name,"Version":.Version,"Advisory":.Vulnerabilities[]} | select(.Advisory.Severity=="High") | {"Advisory":.Advisory.Name,"Link":.Advisory.Link,"PACKAGE":.Name,"CURRENT VERSION":.Version,"FIXED IN VERSION":.Advisory.FixedBy }'
 
 
+test
