@@ -1,7 +1,7 @@
 kind: DevWorkspace
 apiVersion: workspace.devfile.io/v1alpha2
 metadata:
-  name: $(inputs.params.workspace_name)
+  name: my-workspace
 spec:
   routingClass: che
   started: true
@@ -10,7 +10,7 @@ spec:
       uri: "https://devspaces.apps.sandbox-m3.1530.p1.openshiftapps.com/plugin-registry/v3/plugins/che-incubator/che-code/insiders/devfile.yaml"
   template:
     projects:
-      - name: $(project_name)
+      - name: my-project
         git:
           remotes:
             origin: https://github.com/eclipse-che/che-docs
