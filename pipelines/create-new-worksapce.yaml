@@ -1,0 +1,20 @@
+kind: DevWorkspace
+apiVersion: workspace.devfile.io/v1alpha2
+metadata:
+  name: my-devworkspace
+spec:
+  routingClass: che
+  started: true
+  contributions:
+    - name: ide
+      uri: "https://devspaces.apps.sandbox-m3.1530.p1.openshiftapps.com/plugin-registry/v3/plugins/che-incubator/che-code/insiders/devfile.yaml"
+  template:
+    projects:
+      - name: my-project-name
+        git:
+          remotes:
+            origin: https://github.com/eclipse-che/che-docs
+    components:
+      - name: tooling-container
+        container:
+          image: quay.io/devfile/universal-developer-image:ubi8-latest
