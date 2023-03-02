@@ -13,7 +13,7 @@ spec:
       - name: my-project
         git:
           remotes:
-            origin: https://github.com/eclipse-che/che-docs
+            origin: https://github.com/wael2000/b-ver
     components:
       - name: tooling-container
         container:
