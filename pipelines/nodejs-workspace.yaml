@@ -144,10 +144,6 @@ spec:
       - name: mongo-storage
         volume:
           size: 1G
-      - name: che-code-nodejs-mongodb
-        plugin:
-          kubernetes:
-            name: che-code-nodejs-mongodb
     commands:
       - id: 1-run
         exec:
