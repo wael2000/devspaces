@@ -3,11 +3,12 @@ apiVersion: workspace.devfile.io/v1alpha2
 metadata:
   name: nodejs-workspace
 spec:
+  contributions:
+    - kubernetes:
+        name: che-code-nodejs-mongodb
+      name: che-code-nodejs-mongodb
   routingClass: che
   started: true
-  contributions:
-    - name: ide
-      uri: "https://raw.githubusercontent.com/wael2000/devspaces/main/pipelines/nodejs-mongodb-devfile.yaml"
   template:
     projects:
       - name: my-project
