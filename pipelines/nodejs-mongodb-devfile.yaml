@@ -1,135 +1,23 @@
-schemaVersion: 2.1.0
+apiVersion: 1.0.0
 metadata:
-  name: nodejs-workspace
+  name: nodejs-sample
+projects:
+  - name: nodejs-sample
+    source:
+      type: git
+      location: 'https://github.com/che-samples/web-nodejs-sample.git'
 components:
-  - attributes:
-      che-code.eclipse.org/contribute-cpuLimit: true
-      che-code.eclipse.org/contribute-cpuRequest: true
-      che-code.eclipse.org/contribute-endpoint/che-code: 3100
-      che-code.eclipse.org/contribute-endpoint/code-redirect-1: 13131
-      che-code.eclipse.org/contribute-endpoint/code-redirect-2: 13132
-      che-code.eclipse.org/contribute-endpoint/code-redirect-3: 13133
-      che-code.eclipse.org/contribute-entry-point: true
-      che-code.eclipse.org/contribute-memoryLimit: true
-      che-code.eclipse.org/contribute-memoryRequest: true
-      che-code.eclipse.org/contributed-container: nodejs
-      che-code.eclipse.org/original-memoryLimit: 1G
-    container:
-      command:
-        - /checode/entrypoint-volume.sh
-      cpuLimit: 500m
-      cpuRequest: 30m
-      endpoints:
-        - exposure: public
-          name: nodejs
-          protocol: http
-          targetPort: 8080
-        - attributes:
-            contributed-by: che-code.eclipse.org
-            cookiesAuthEnabled: true
-            discoverable: false
-            type: main
-            urlRewriteSupported: true
-          exposure: public
-          name: che-code
-          path: '?tkn=eclipse-che'
-          protocol: https
-          secure: false
-          targetPort: 3100
-        - attributes:
-            contributed-by: che-code.eclipse.org
-            discoverable: false
-            urlRewriteSupported: false
-          exposure: public
-          name: code-redirect-1
-          protocol: http
-          targetPort: 13131
-        - attributes:
-            contributed-by: che-code.eclipse.org
-            discoverable: false
-            urlRewriteSupported: false
-          exposure: public
-          name: code-redirect-2
-          protocol: http
-          targetPort: 13132
-        - attributes:
-            contributed-by: che-code.eclipse.org
-            discoverable: false
-            urlRewriteSupported: false
-          exposure: public
-          name: code-redirect-3
-          protocol: http
-          targetPort: 13133
-      env:
-        - name: SECRET
-          value: 220fd770-c028-480d-8f95-f84353c7d55a
-        - name: NODE_ENV
-          value: production
-        - name: CHE_DASHBOARD_URL
-          value: 'https://devspaces.apps.cluster-r2stl.r2stl.sandbox1213.opentlc.com'
-        - name: CHE_PLUGIN_REGISTRY_URL
-          value: 'https://devspaces.apps.cluster-r2stl.r2stl.sandbox1213.opentlc.com/plugin-registry/v3'
-        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
-          value: 'http://plugin-registry.openshift-operators.svc:8080/v3'
-        - name: OPENVSX_REGISTRY_URL
-          value: 'https://open-vsx.org'
-      image: 'registry.redhat.io/devspaces/udi-rhel8@sha256:8de469cc9131a42092bd66e0f27a52bbc9b9a449235abf5b900d172a1bd3c985'
-      memoryLimit: 2.07G
-      memoryRequest: 256Mi
-      mountSources: true
-      sourceMapping: /projects
-      volumeMounts:
-        - name: npm
-          path: /home/user/.npm
-        - name: checode
-          path: /checode
-    name: nodejs
-  - name: npm
-    volume:
-      size: 1G
-  - name: checode
-    volume:
-      size: 1G
-  - container:
-      endpoints:
-        - exposure: internal
-          name: mongodb
-          protocol: http
-          targetPort: 27017
-      env:
-        - name: MONGODB_USER
-          value: user
-        - name: MONGODB_PASSWORD
-          value: password
-        - name: MONGODB_DATABASE
-          value: guestbook
-        - name: MONGODB_ADMIN_PASSWORD
-          value: password
-        - name: CHE_DASHBOARD_URL
-          value: 'https://devspaces.apps.cluster-r2stl.r2stl.sandbox1213.opentlc.com'
-        - name: CHE_PLUGIN_REGISTRY_URL
-          value: 'https://devspaces.apps.cluster-r2stl.r2stl.sandbox1213.opentlc.com/plugin-registry/v3'
-        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
-          value: 'http://plugin-registry.openshift-operators.svc:8080/v3'
-        - name: OPENVSX_REGISTRY_URL
-          value: 'https://open-vsx.org'
-      image: 'registry.redhat.io/rhscl/mongodb-36-rhel7@sha256:9f799d356d7d2e442bde9d401b720600fd9059a3d8eefea6f3b2ffa721c0dc73'
-      memoryLimit: 512Mi
-      mountSources: false
-      sourceMapping: /projects
-      volumeMounts:
-        - name: mongo-storage
-          path: /var/lib/mongodb/data
-    name: mongo
-  - name: mongo-storage
-    volume:
-      size: 1G
+  - alias: theia-editor
+    type: cheEditor
+    id: org.eclipse.che.editor.theia:latest
 commands:
-  - exec:
-      commandLine: npm install && node --inspect=9229 app.js
-      component: nodejs
-      group:
-        kind: run
-      label: Run the application
-      workingDir: '${PROJECTS_ROOT}/nodejs-mongodb-sample'
-    id: 1-run
+  - name: start
+    actions:
+      - type: exec
+        component: theia-editor
+        command: cd ${CHE_PROJECTS_ROOT}/nodejs-sample/app && node app.js
+  - name: test
+    actions:
+      - type: exec
+        component: theia-editor
+        command: curl localhost:3000
