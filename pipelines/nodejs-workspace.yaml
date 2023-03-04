@@ -6,14 +6,14 @@ spec:
   commands:
     - id: init-container-command
       apply:
-        component: che-code-injector
+        component: che-code-injector1
   events:
     preStart:
       - init-container-command
   components:
     - name: checode
       volume: {}
-    - name: che-code-injector
+    - name: che-code-injector1
       container:
         image: registry.redhat.io/devspaces/code-rhel8
         command:
