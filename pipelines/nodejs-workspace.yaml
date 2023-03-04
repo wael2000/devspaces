@@ -32,7 +32,18 @@ metadata:
   name: nodejs-workspace
 spec:
   started: true
+  contributions:
+    - kubernetes:
+        name: che-code-nodejs-mongodb
+      name: che-code-nodejs-mongodb
+  routingClass: che
+  started: true
   template:
+    attributes:
+      controller.devfile.io/devworkspace-config:
+        name: devworkspace-config
+        namespace: openshift-operators
+      controller.devfile.io/storage-type: per-workspace
     components:
       - name: nodejs
         container:
@@ -148,7 +159,7 @@ spec:
           group:
             kind: run
     projects:
-      - name: nodejs-project
+      - name: my-project-name
         git:
           remotes:
             origin: https://github.com/devspaces-samples/nodejs-mongodb-sample
