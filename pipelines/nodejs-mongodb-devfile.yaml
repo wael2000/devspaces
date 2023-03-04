@@ -47,6 +47,18 @@ components:
   - name: mongo-storage
     volume:
       size: 1G
+  - name: che-code-injector
+    container:
+      image: registry.redhat.io/devspaces/code-rhel8@sha256:96254e48ee143514f9a343ed11c2214131de5e562398a50f7b9d0a8d86f7b064
+      command:
+        - /entrypoint-init-container.sh
+      volumeMounts:
+        - name: checode
+          path: /checode
+      memoryLimit: 512Mi
+      memoryRequest: 128Mi
+      cpuLimit: 1000m
+      cpuRequest: 30m      
 commands:
   - id: 1-run
     exec:
