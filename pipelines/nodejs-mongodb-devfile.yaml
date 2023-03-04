@@ -2,30 +2,98 @@ schemaVersion: 2.1.0
 metadata:
   name: nodejs-workspace
 components:
-  - name: nodejs
+  - attributes:
+      che-code.eclipse.org/contribute-cpuLimit: true
+      che-code.eclipse.org/contribute-cpuRequest: true
+      che-code.eclipse.org/contribute-endpoint/che-code: 3100
+      che-code.eclipse.org/contribute-endpoint/code-redirect-1: 13131
+      che-code.eclipse.org/contribute-endpoint/code-redirect-2: 13132
+      che-code.eclipse.org/contribute-endpoint/code-redirect-3: 13133
+      che-code.eclipse.org/contribute-entry-point: true
+      che-code.eclipse.org/contribute-memoryLimit: true
+      che-code.eclipse.org/contribute-memoryRequest: true
+      che-code.eclipse.org/contribute-volume-mount/checode: /checode
+      che-code.eclipse.org/contributed-container: nodejs
+      che-code.eclipse.org/original-memoryLimit: 1G
     container:
-      image: registry.redhat.io/devspaces/udi-rhel8:3.4
-      env:
-      # The values below are used to set up the environment for running the application
-        - name: SECRET
-          value: 220fd770-c028-480d-8f95-f84353c7d55a 
-        - name: NODE_ENV
-          value: production
+      command:
+        - /checode/entrypoint-volume.sh
+      cpuLimit: 500m
+      cpuRequest: 30m
       endpoints:
         - exposure: public
           name: nodejs
+          protocol: http
           targetPort: 8080
-      memoryLimit: 1G
+        - attributes:
+            contributed-by: che-code.eclipse.org
+            cookiesAuthEnabled: true
+            discoverable: false
+            type: main
+            urlRewriteSupported: true
+          exposure: public
+          name: che-code
+          path: '?tkn=eclipse-che'
+          protocol: https
+          secure: false
+          targetPort: 3100
+        - attributes:
+            contributed-by: che-code.eclipse.org
+            discoverable: false
+            urlRewriteSupported: false
+          exposure: public
+          name: code-redirect-1
+          protocol: http
+          targetPort: 13131
+        - attributes:
+            contributed-by: che-code.eclipse.org
+            discoverable: false
+            urlRewriteSupported: false
+          exposure: public
+          name: code-redirect-2
+          protocol: http
+          targetPort: 13132
+        - attributes:
+            contributed-by: che-code.eclipse.org
+            discoverable: false
+            urlRewriteSupported: false
+          exposure: public
+          name: code-redirect-3
+          protocol: http
+          targetPort: 13133
+      env:
+        - name: SECRET
+          value: 220fd770-c028-480d-8f95-f84353c7d55a
+        - name: NODE_ENV
+          value: production
+        - name: CHE_DASHBOARD_URL
+          value: 'https://devspaces.apps.cluster-r2stl.r2stl.sandbox1213.opentlc.com'
+        - name: CHE_PLUGIN_REGISTRY_URL
+          value: 'https://devspaces.apps.cluster-r2stl.r2stl.sandbox1213.opentlc.com/plugin-registry/v3'
+        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
+          value: 'http://plugin-registry.openshift-operators.svc:8080/v3'
+        - name: OPENVSX_REGISTRY_URL
+          value: 'https://open-vsx.org'
+      image: 'registry.redhat.io/devspaces/udi-rhel8@sha256:8de469cc9131a42092bd66e0f27a52bbc9b9a449235abf5b900d172a1bd3c985'
+      memoryLimit: 2.07G
+      memoryRequest: 256Mi
       mountSources: true
+      sourceMapping: /projects
       volumeMounts:
         - name: npm
           path: /home/user/.npm
+        - name: checode
+          path: /checode
+    name: nodejs
   - name: npm
     volume:
       size: 1G
-  - name: mongo
-    container:
-      image: registry.redhat.io/rhscl/mongodb-36-rhel7:1-50
+  - container:
+      endpoints:
+        - exposure: internal
+          name: mongodb
+          protocol: http
+          targetPort: 27017
       env:
         - name: MONGODB_USER
           value: user
@@ -35,92 +103,31 @@ components:
           value: guestbook
         - name: MONGODB_ADMIN_PASSWORD
           value: password
-      endpoints:
-        - name: mongodb
-          exposure: internal
-          targetPort: 27017
+        - name: CHE_DASHBOARD_URL
+          value: 'https://devspaces.apps.cluster-r2stl.r2stl.sandbox1213.opentlc.com'
+        - name: CHE_PLUGIN_REGISTRY_URL
+          value: 'https://devspaces.apps.cluster-r2stl.r2stl.sandbox1213.opentlc.com/plugin-registry/v3'
+        - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
+          value: 'http://plugin-registry.openshift-operators.svc:8080/v3'
+        - name: OPENVSX_REGISTRY_URL
+          value: 'https://open-vsx.org'
+      image: 'registry.redhat.io/rhscl/mongodb-36-rhel7@sha256:9f799d356d7d2e442bde9d401b720600fd9059a3d8eefea6f3b2ffa721c0dc73'
       memoryLimit: 512Mi
       mountSources: false
+      sourceMapping: /projects
       volumeMounts:
         - name: mongo-storage
           path: /var/lib/mongodb/data
+    name: mongo
   - name: mongo-storage
     volume:
       size: 1G
-  - name: che-code-runtime-description
-    container:
-      image: registry.redhat.io/devspaces/udi-rhel8@sha256:8de469cc9131a42092bd66e0f27a52bbc9b9a449235abf5b900d172a1bd3c985
-      command:
-        - /checode/entrypoint-volume.sh
-      volumeMounts:
-        - name: checode
-          path: /checode
-      memoryLimit: 1024Mi
-      memoryRequest: 256Mi
-      cpuLimit: 500m
-      cpuRequest: 30m
-      endpoints:
-        - name: che-code
-          attributes:
-            type: main
-            cookiesAuthEnabled: true
-            discoverable: false
-            urlRewriteSupported: true
-          targetPort: 3100
-          exposure: public
-          path: '?tkn=eclipse-che'
-          secure: false
-          protocol: https
-        - name: code-redirect-1
-          attributes:
-            discoverable: false
-            urlRewriteSupported: false
-          targetPort: 13131
-          exposure: public
-          protocol: http
-        - name: code-redirect-2
-          attributes:
-            discoverable: false
-            urlRewriteSupported: false
-          targetPort: 13132
-          exposure: public
-          protocol: http
-        - name: code-redirect-3
-          attributes:
-            discoverable: false
-            urlRewriteSupported: false
-          targetPort: 13133
-          exposure: public
-          protocol: http
-    attributes:
-      app.kubernetes.io/component: che-code-runtime
-      app.kubernetes.io/part-of: che-code.eclipse.org
-  - name: che-code-injector
-    container:
-      image: registry.redhat.io/devspaces/code-rhel8@sha256:96254e48ee143514f9a343ed11c2214131de5e562398a50f7b9d0a8d86f7b064
-      command:
-        - /entrypoint-init-container.sh
-      volumeMounts:
-        - name: checode
-          path: /checode
-      memoryLimit: 512Mi
-      memoryRequest: 128Mi
-      cpuLimit: 1000m
-      cpuRequest: 30m    
-  - name: checode
-    volume: {}      
 commands:
-  - id: 1-run
-    exec:
-      label: "Run the application"
+  - exec:
+      commandLine: npm install && node --inspect=9229 app.js
       component: nodejs
-      workingDir: ${PROJECTS_ROOT}/nodejs-mongodb-sample
-      commandLine: "npm install && node --inspect=9229 app.js"
       group:
         kind: run
-  - id: init-container-command
-    apply:
-      component: che-code-injector
-events:
-  preStart:
-    - init-container-command        
+      label: Run the application
+      workingDir: '${PROJECTS_ROOT}/nodejs-mongodb-sample'
+    id: 1-run
