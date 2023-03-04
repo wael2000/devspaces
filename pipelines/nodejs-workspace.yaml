@@ -15,7 +15,7 @@ spec:
       volume: {}
     - name: che-code-injector
       container:
-        image: registry.redhat.io/devspaces/code-rhel8@sha256:96254e48ee143514f9a343ed11c2214131de5e562398a50f7b9d0a8d86f7b064
+        image: registry.redhat.io/devspaces/code-rhel8
         command:
           - /entrypoint-init-container.sh
         volumeMounts:
@@ -29,14 +29,14 @@ spec:
 apiVersion: workspace.devfile.io/v1alpha2
 kind: DevWorkspace
 metadata:
-  name: nodejs-mongodb
+  name: nodejs-workspace
 spec:
   started: true
   template:
     components:
       - name: nodejs
         container:
-          image: registry.redhat.io/devspaces/udi-rhel8@sha256:8de469cc9131a42092bd66e0f27a52bbc9b9a449235abf5b900d172a1bd3c985
+          image: registry.redhat.io/devspaces/udi-rhel8
           env:
             - name: SECRET
               value: 220fd770-c028-480d-8f95-f84353c7d55a
@@ -112,7 +112,7 @@ spec:
           size: 1G
       - name: mongo
         container:
-          image: registry.redhat.io/rhscl/mongodb-36-rhel7@sha256:9f799d356d7d2e442bde9d401b720600fd9059a3d8eefea6f3b2ffa721c0dc73
+          image: registry.redhat.io/rhscl/mongodb-36-rhel7
           env:
             - name: MONGODB_USER
               value: user
