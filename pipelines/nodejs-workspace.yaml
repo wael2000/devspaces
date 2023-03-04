@@ -148,7 +148,7 @@ spec:
           group:
             kind: run
     projects:
-      - name: my-project-name
+      - name: nodejs-project
         git:
           remotes:
             origin: https://github.com/devspaces-samples/nodejs-mongodb-sample
