@@ -1,0 +1,20 @@
+kind: DevWorkspace
+apiVersion: workspace.devfile.io/v1alpha2
+metadata:
+  name: nodejs-workspace
+spec:
+  routingClass: che
+  started: true
+  contributions:
+    - name: ide
+      uri: "https://raw.githubusercontent.com/wael2000/devspaces/main/pipelines/nodejs-mongodb-devfile.yaml"
+  template:
+    projects:
+      - name: my-project
+        git:
+          remotes:
+            origin: https://github.com/devspaces-samples/nodejs-mongodb-sample
+    components:
+      - name: tooling-container
+        container:
+          image: quay.io/devfile/universal-developer-image:ubi8-latest
