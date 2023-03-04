@@ -6,10 +6,6 @@ metadata:
   name: nodejs-workspace
 kind: DevWorkspace
 spec:
-  contributions:
-    - kubernetes:
-        name: che-code-nodejs-mongodb
-      name: che-code-nodejs-mongodb
   routingClass: che
   started: true
   template:
