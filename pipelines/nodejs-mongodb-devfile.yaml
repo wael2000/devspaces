@@ -58,7 +58,9 @@ components:
       memoryLimit: 512Mi
       memoryRequest: 128Mi
       cpuLimit: 1000m
-      cpuRequest: 30m      
+      cpuRequest: 30m    
+  - name: checode
+    volume: {}      
 commands:
   - id: 1-run
     exec:
