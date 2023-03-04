@@ -68,3 +68,9 @@ commands:
       commandLine: "npm install && node --inspect=9229 app.js"
       group:
         kind: run
+  - id: init-container-command
+    apply:
+      component: che-code-injector
+events:
+  preStart:
+    - init-container-command        
