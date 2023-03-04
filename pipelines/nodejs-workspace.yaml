@@ -7,6 +7,8 @@ spec:
     - kubernetes:
         name: che-code-nodejs-mongodb
       name: che-code-nodejs-mongodb
+    - name: ide
+      uri: "https://raw.githubusercontent.com/wael2000/devspaces/main/pipelines/nodejs-mongodb-devfile.yaml"      
   routingClass: che
   started: true
   template:
