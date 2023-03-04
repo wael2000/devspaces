@@ -70,4 +70,4 @@ components:
       memoryLimit: 512Mi
       memoryRequest: 128Mi
       cpuLimit: 1000m
-      cpuRequest: 100m
+      cpuRequest: 30m
