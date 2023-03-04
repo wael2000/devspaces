@@ -12,7 +12,6 @@ components:
       che-code.eclipse.org/contribute-entry-point: true
       che-code.eclipse.org/contribute-memoryLimit: true
       che-code.eclipse.org/contribute-memoryRequest: true
-      che-code.eclipse.org/contribute-volume-mount/checode: /checode
       che-code.eclipse.org/contributed-container: nodejs
       che-code.eclipse.org/original-memoryLimit: 1G
     container:
