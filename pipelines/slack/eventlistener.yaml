@@ -14,7 +14,7 @@ spec:
               kind: Service
               name: slack-webhook-interceptor
               apiVersion: v1
-              namespace: default
+              namespace: admin-cicd
         - cel:
             filter: body.slack.command == '/build'
             overlays:
