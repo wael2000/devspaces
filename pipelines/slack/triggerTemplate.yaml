@@ -1,0 +1,31 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: demo-trigger-template
+spec:
+  params:
+    - description: developer username
+      name: user
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: waas-pipeline-$(tt.params.user)-
+      spec:
+        params:
+          - name: user
+            value: $(tt.params.user)
+        pipelineRef:
+          name: waas-pipeline
+        serviceAccountName: pipeline
+        workspaces:
+          - name: pipeline-storage
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 128Mi
+                storageClassName: gp3-csi
+                volumeMode: Filesystem
