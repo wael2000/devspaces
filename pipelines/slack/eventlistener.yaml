@@ -3,28 +3,13 @@ kind: EventListener
 metadata:
   name: demo-slack-event-listener
 spec:
+  namespaceSelector: {}
+  resources: {}
+  serviceAccountName: pipeline
   triggers:
-    - name: slack-trigger
-      interceptors:
-        - webhook:
-            header:
-              - name: Slack-Decodeprefix
-                value: slack
-            objectRef:
-              kind: Service
-              name: slack-webhook-interceptor
-              apiVersion: v1
-              namespace: admin-cicd
-        - cel:
-            filter: body.slack.command == '/build'
-            overlays:
-            - key: slack.repo
-              expression: "split(body.slack.text, ' ')[0]"
-            - key: slack.sha
-              expression: "split(body.slack.text, ' ')[1]"
-            - key: slack.command
-              expression: "split(body.slack.command, '/')[1]"
-      bindings:
-        - ref: slack-trigger-binding
+    - bindings:
+        - kind: TriggerBinding
+          ref: demo-trigger-binding
+      name: slack-trigger
       template:
-        ref: demo-slack-trigger-template
+        ref: demo-trigger-template
