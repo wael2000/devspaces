@@ -4,9 +4,5 @@ metadata:
   name: slack-trigger-binding
 spec:
   params:
-  - name: command
-    value: $(body.slack.command)
-  - name: repo
-    value: $(body.slack.repo)
-  - name: sha
-    value: $(body.slack.sha)
+    - name: user
+      value: $(body.user)
