@@ -1,0 +1,73 @@
+schemaVersion: 2.1.0
+metadata:
+  name: che-code
+commands:
+  - id: init-container-command
+    apply:
+      component: che-code-injector
+events:
+  preStart:
+    - init-container-command
+components:
+  - name: che-code-runtime-description
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel8@sha256:8de469cc9131a42092bd66e0f27a52bbc9b9a449235abf5b900d172a1bd3c985
+      command:
+        - /checode/entrypoint-volume.sh
+      volumeMounts:
+        - name: checode
+          path: /checode
+      memoryLimit: 1024Mi
+      memoryRequest: 256Mi
+      cpuLimit: 500m
+      cpuRequest: 30m
+      endpoints:
+        - name: che-code
+          attributes:
+            type: main
+            cookiesAuthEnabled: true
+            discoverable: false
+            urlRewriteSupported: true
+          targetPort: 3100
+          exposure: public
+          path: '?tkn=eclipse-che'
+          secure: false
+          protocol: https
+        - name: code-redirect-1
+          attributes:
+            discoverable: false
+            urlRewriteSupported: false
+          targetPort: 13131
+          exposure: public
+          protocol: http
+        - name: code-redirect-2
+          attributes:
+            discoverable: false
+            urlRewriteSupported: false
+          targetPort: 13132
+          exposure: public
+          protocol: http
+        - name: code-redirect-3
+          attributes:
+            discoverable: false
+            urlRewriteSupported: false
+          targetPort: 13133
+          exposure: public
+          protocol: http
+    attributes:
+      app.kubernetes.io/component: che-code-runtime
+      app.kubernetes.io/part-of: che-code.eclipse.org
+  - name: checode
+    volume: {}
+  - name: che-code-injector
+    container:
+      image: registry.redhat.io/devspaces/code-rhel8@sha256:96254e48ee143514f9a343ed11c2214131de5e562398a50f7b9d0a8d86f7b064
+      command:
+        - /entrypoint-init-container.sh
+      volumeMounts:
+        - name: checode
+          path: /checode
+      memoryLimit: 512Mi
+      memoryRequest: 128Mi
+      cpuLimit: 1000m
+      cpuRequest: 30m

@@ -1,0 +1,23 @@
+apiVersion: 1.0.0
+metadata:
+  name: nodejs-sample
+projects:
+  - name: nodejs-sample
+    source:
+      type: git
+      location: 'https://github.com/che-samples/web-nodejs-sample.git'
+components:
+  - alias: theia-editor
+    type: cheEditor
+    id: org.eclipse.che.editor.theia:latest
+commands:
+  - name: start
+    actions:
+      - type: exec
+        component: theia-editor
+        command: cd ${CHE_PROJECTS_ROOT}/nodejs-sample/app && node app.js
+  - name: test
+    actions:
+      - type: exec
+        component: theia-editor
+        command: curl localhost:3000
