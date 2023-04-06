@@ -1,0 +1,20 @@
+kind: DevWorkspace
+apiVersion: workspace.devfile.io/v1alpha2
+metadata:
+  name: my-workspace
+spec:
+  routingClass: che
+  started: true
+  contributions:
+    - name: ide
+      uri: "https://raw.githubusercontent.com/wael2000/devspaces/main/pipelines/devfile.yaml"
+  template:
+    projects:
+      - name: my-project
+        git:
+          remotes:
+            origin: https://github.com/eclipse-che/che-docs
+    components:
+      - name: tooling-container
+        container:
+          image: quay.io/devfile/universal-developer-image:ubi8-latest
