@@ -3,11 +3,17 @@ kind: Pipeline
 metadata:
   name: demo-pipeline
 spec:
+  params:
+    - default: user1
+      name: develoepr
+      type: string
   tasks:
     - name: provision-workspace
       params:
         - name: SCRIPT
-          value: oc apply -f pipelines/create-new-worksapce.yaml
+          value: >-
+            oc apply -f pipelines/create-new-worksapce.yaml -n
+            $(params.develoepr)-devspace
         - name: VERSION
           value: latest
       runAfter:
