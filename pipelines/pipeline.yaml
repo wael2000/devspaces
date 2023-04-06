@@ -13,7 +13,7 @@ spec:
         - name: SCRIPT
           value: >-
             oc apply -f pipelines/create-new-worksapce.yaml -n
-            $(params.develoepr)-devspace
+            $(params.develoepr)-devspaces
         - name: VERSION
           value: latest
       runAfter:
