@@ -13,7 +13,7 @@ spec:
       - name: my-project
         git:
           remotes:
-            origin: https://github.com/eclipse-che/che-docs
+            origin: https://github.com/devspaces-samples/nodejs-mongodb-sample
     components:
       - name: tooling-container
         container:
